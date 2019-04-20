@@ -1,9 +1,14 @@
+const common = require("./common");
+
 exports.openSiteSettings = async function(page) {
-    await openMenu(page, "Settings", "SiteSettings", "#siteSettings-container > div > div > div.dnn-persona-bar-page.show.undefined > div.dnn-grid-cell.dnn-persona-bar-page-body > div > div > ul");
-}
+  await openMenu(page, "Settings", "SiteSettings", "#SiteSettings-panel");
+};
 exports.openUsers = async function(page) {
-    await openMenu(page, "Manage", "Users", "#users-container > div > div.boilerplate-app.personaBar-mainContainer > div > div > div.dnn-grid-cell.dnn-persona-bar-page-body > div.dnn-grid-cell.persona-bar-page-body > div.dnn-grid-cell._30Ywg8MZnSyy25yOY32zZ2 > div.dnn-grid-cell.header-row > div:nth-child(2) > h6");
-}
+  await openMenu(page, "Manage", "Users", "#Users-panel");
+};
+exports.openRoles = async function(page) {
+  await openMenu(page, "Manage", "Roles", "#Roles-panel");
+};
 
 openMenu = async function(page, menu, panel, testSelector) {
   await page.waitForSelector("#personaBar-iframe");
@@ -11,7 +16,11 @@ openMenu = async function(page, menu, panel, testSelector) {
   const personaBar = frames.find(f => f.name() === "personaBar-iframe");
   if (personaBar) {
     var test = await personaBar.$(testSelector);
-    if (test) return;
+    if (test) {
+      if (common.isVisible(personaBar, testSelector)) {
+        return;
+      }
+    }
     await personaBar.waitForSelector("#" + menu + " > span.icon-loader > svg");
     await personaBar.hover("#" + menu + " > span.icon-loader > svg");
     await page.waitFor(1000);
@@ -21,7 +30,7 @@ openMenu = async function(page, menu, panel, testSelector) {
     );
     await btnSs.click();
     await personaBar.waitForSelector(testSelector);
-    }
+  }
 };
 
 exports.closeMenu = async function(page) {
