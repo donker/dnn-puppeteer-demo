@@ -30,3 +30,22 @@ exports.dropdownSelect = async function(page, selector, value) {
       break;
   }
 };
+
+Object.prototype.getPath = function(childName) {
+  if (this.path === undefined) return undefined;
+  var path = this.path === undefined ? "" : this.path;
+  if (this[childName]) {
+    if (typeof this[childName] === "string") {
+      return path + this[childName];
+    } else {
+      return path + this[childName].path;
+    }
+  }
+  for (var property in this) {
+    if (this.hasOwnProperty(property)) {
+      let childPath = this[property].getPath(childName);
+      if (childPath !== undefined) return path + childPath;
+    }
+  }
+  return undefined;
+};
