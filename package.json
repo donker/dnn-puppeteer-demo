@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node test3.js"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "faker": "^4.1.0",
+    "jest": "^24.8.0",
     "puppeteer": "^1.14.0"
   }
 }

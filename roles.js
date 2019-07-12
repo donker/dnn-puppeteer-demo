@@ -35,7 +35,7 @@ exports.addRole = async function(
   roleName,
   description,
   status,
-  public,
+  publicRole,
   roleGroup,
   securityMode,
   rsvpCode,
@@ -59,7 +59,7 @@ exports.addRole = async function(
         status
       );
     }
-    if (public) {
+    if (publicRole) {
       await personaBar.click(newRolePanel.getPath("public"));
     }
     if (roleGroup) {

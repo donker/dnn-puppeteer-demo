@@ -12,7 +12,9 @@ const elements = {
   passwordConfirmTextBox: "div.new-user-box input[type='password'][tabindex='8']",
   switches: "div.new-user-box .dnn-switch",
   emailNotificationCheckbox: "div.email-notification-line input",
-  saveNewUserBtn: "div.new-user-box button[role='primary']"
+  saveNewUserBtn: "div.new-user-box button[role='primary']",
+  searchUserBox: "div.users-filter-container input[type='search']",
+  usersList: "div.persona-bar-page-body div.collapsible-component-users"
 };
 
 exports.addUser = async function (
@@ -82,7 +84,7 @@ exports.addRandomUser = async function (page, authorized, password) {
   );
 };
 
-exports.getRandomUserName = function () {
+exports.getRandomUser = function () {
   var res = {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName()
@@ -94,6 +96,18 @@ exports.getRandomUserName = function () {
   res.displayName = res.firstName + " " + res.lastName;
   return res;
 };
+
+exports.findUser = async function (page, userName) {
+  const frames = await page.frames();
+  const personaBar = frames.find(f => f.name() === "personaBar-iframe");
+  if (personaBar) {
+    await personaBar.click(elements.searchUserBox);
+    await page.keyboard.type(userName);
+    const uname = await personaBar.$eval(elements.usersList + " div.user-names p", el => el.textContent);
+    console.log(uname);
+    return uname;
+  }
+}
 
 var _getName = function (random, whichList) {
   var list = names[whichList];
