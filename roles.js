@@ -1,5 +1,5 @@
-var randomWords = require("random-words");
 const common = require("./common");
+var faker = require('faker');
 
 const addNewRoleBtn =
   "#roles-container > div > div > div > div.dnn-persona-bar-page-header > div > button";
@@ -89,11 +89,7 @@ exports.addRole = async function(
 };
 
 exports.addRandomRole = async function(page) {
-  var roleName = randomWords({ min: 1, max: 4, join: " " });
-  roleName = roleName
-    .slice(0, 1)
-    .toUpperCase()
-    .concat(roleName.slice(1));
+  var roleName = faker.company.bs;
   await this.addRole(page, roleName, "Random role");
   return roleName;
 };

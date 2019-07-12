@@ -1,4 +1,4 @@
-const names = require("./names");
+var faker = require('faker');
 
 const elements = {
   addUserBtn:
@@ -15,7 +15,7 @@ const elements = {
   saveNewUserBtn: "div.new-user-box button[role='primary']"
 };
 
-exports.addUser = async function(
+exports.addUser = async function (
   page,
   firstName,
   lastName,
@@ -61,13 +61,13 @@ exports.addUser = async function(
   }
 };
 
-exports.addRandomUsers = async function(page, nrUsers, password) {
+exports.addRandomUsers = async function (page, nrUsers, password) {
   for (var i = 0; i < nrUsers; i++) {
     await this.addRandomUser(page, true, password);
   }
 };
 
-exports.addRandomUser = async function(page, authorized, password) {
+exports.addRandomUser = async function (page, authorized, password) {
   var newUser = this.getRandomUserName();
   await this.addUser(
     page,
@@ -82,25 +82,20 @@ exports.addRandomUser = async function(page, authorized, password) {
   );
 };
 
-exports.getRandomUserName = function() {
-  var fn =
-    Math.random() > 0.5
-      ? _getName(Math.random(), "first_male")
-      : _getName(Math.random(), "first_female");
-  var ln = _getName(Math.random(), "last");
-  return {
-    firstName: fn,
-    lastName: ln,
-    email: fn.toLowerCase() + "@" + ln.toLowerCase() + ".name",
-    userName:
-      fn.toLowerCase().substring(0, 1) +
-      ln.toLowerCase() +
-      Math.floor(Math.random() * 100).toString(),
-    displayName: fn + " " + ln
-  };
+exports.getRandomUserName = function () {
+  var res = {
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName()
+  }
+  res.email = res.firstName.toLowerCase() + "@" + res.lastName.toLowerCase() + ".name";
+  res.userName = res.firstName.toLowerCase().substring(0, 1) +
+    res.lastName.toLowerCase() +
+    Math.floor(Math.random() * 100).toString();
+  res.displayName = res.firstName + " " + res.lastName;
+  return res;
 };
 
-var _getName = function(random, whichList) {
+var _getName = function (random, whichList) {
   var list = names[whichList];
   var idx = (random * list.length) >>> 0;
   return list[idx];

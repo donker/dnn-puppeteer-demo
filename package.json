@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test3.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^1.14.0",
-    "random-words": "^1.1.0"
+    "faker": "^4.1.0",
+    "puppeteer": "^1.14.0"
   }
 }
