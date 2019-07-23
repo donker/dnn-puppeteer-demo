@@ -31,6 +31,7 @@ exports.addUser = async function (
   const frames = await page.frames();
   const personaBar = frames.find(f => f.name() === "personaBar-iframe");
   if (personaBar) {
+    await personaBar.waitForSelector(elements.addUserBtn);
     await personaBar.click(elements.addUserBtn);
     await personaBar.waitForSelector(elements.addUserPanel);
     await personaBar.click(elements.firstNameTextBox);

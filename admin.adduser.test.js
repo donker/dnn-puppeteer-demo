@@ -9,6 +9,8 @@ let browser;
 const width = 1920;
 const height = 1080;
 
+let newUser = users.getRandomUser();
+
 jest.setTimeout(100000);
 
 beforeAll(async () => {
@@ -26,13 +28,21 @@ afterAll(() => {
 
 describe("Add User", () => {
     test("Admin can add a user", async () => {
-        await login.Login(page, "host", "dnnhost1");
+        await login.login(page, "host", "dnnhost1");
         await pb.openUsers(page);
-        var newUser = users.getRandomUser();
         await users.addUser(page, newUser.firstName, newUser.lastName, newUser.userName, newUser.email, true, false, "password", false);
         var uname = await users.findUser(page, newUser.userName);
         expect(uname).toEqual(newUser.userName);
         await page.waitFor(3000);
-        await pb.closeMenu(page);      
+        await pb.closeMenu(page);
+        await login.logout(page);
+    }, 160000);
+    test("Added user can log in", async () => {
+        await login.login(page, newUser.userName, "password");
+        const dispName = await login.currentUserDisplayname(page);
+        expect(dispName).toEqual(newUser.displayName);
+        await login.logout(page);
     }, 160000);
 });
+
+
